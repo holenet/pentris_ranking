@@ -23,9 +23,9 @@ def encrypt(c):
     print(range(bits*interval-1,-1,-1))
     for i in range(bits*interval-1,-1,-1):
         if i%interval<interval-1:
-            s = chr(41+17*randint(0,4)+randint(3,16))+s
+            s = chr(48+17*randint(0,4)+randint(0,7)+2)+s
         else:
-            s = chr(41+17*randint(0,4)+c%2+1)+s
+            s = chr(48+17*randint(0,4)+c%2)+s
             c //= 2
     return s
 
@@ -39,8 +39,8 @@ def decrypt(s):
     for i in range(l):
         if i % interval < interval-1:
             continue
-        k = (ord(s[i])-41)%17-1
-        if k<0 or k>1:
+        k = (ord(s[i])-48)%17
+        if k>1:
             return -i-1000
         c *= 2
         c += k
