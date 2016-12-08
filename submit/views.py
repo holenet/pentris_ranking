@@ -23,9 +23,9 @@ def encrypt(c):
     print(range(bits*interval-1,-1,-1))
     for i in range(bits*interval-1,-1,-1):
         if i%interval<interval-1:
-            s = chr(35+18*randint(0,4)+randint(0,15))+s
+            s = chr(41+17*randint(0,4)+randint(3,16))+s
         else:
-            s = chr(33+18*randint(0,4)+c%2)+s
+            s = chr(41+17*randint(0,4)+c%2+1)+s
             c //= 2
     return s
 
@@ -39,8 +39,8 @@ def decrypt(s):
     for i in range(l):
         if i % interval < interval-1:
             continue
-        k = (ord(s[i])-33) % 18
-        if k>1:
+        k = (ord(s[i])-41)%17-1
+        if k<0 or k>1:
             return -i-1000
         c *= 2
         c += k
@@ -56,7 +56,7 @@ def submit(request):
         return HttpResponseBadRequest()
 
     decrypted = decrypt(request.POST['score'])
-    if decrypted == -1:
+    if decrypted < 0:
         return HttpResponseBadRequest()
 
     new_score = Score(
